@@ -4,6 +4,7 @@ namespace App\Application\Book\Services;
 
 use App\Domain\Book\Repository\BookRepository;
 use App\Domain\Book\Entities\Book;
+use App\Infrastructure\Persistence\Eloquent\Models\EloquentBook;
 
 class BookService
 {
@@ -27,7 +28,8 @@ class BookService
     public function createBook($name, $isbn, $value)
     {
         $book = new Book(null, $name, $isbn, $value);
-        return $this->bookRepository->save($book);
+        $response = $this->bookRepository->save($book);
+        return $response;
         
     }
 
@@ -44,5 +46,36 @@ class BookService
     public function deleteBook($id): void
     {
         $this->bookRepository->delete($id);
+    }
+
+    public function attachStores($bookId, array $storeIds): ?Book
+    {
+        $book = $this->bookRepository->findById($bookId);
+        if ($book) {
+            return $this->bookRepository->attachStores($book, $storeIds);
+        }
+        return null;
+    }
+
+    public function detachStores($bookId, array $storeIds): ?Book
+    {
+        $book = $this->bookRepository->findById($bookId);
+        if ($book) {
+            try {
+                return $this->bookRepository->detachStores($book, $storeIds);
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+        }
+        return null;
+    }
+
+    public function syncStores($bookId, array $storeIds): ?Book
+    {
+        $book = $this->bookRepository->findById($bookId);
+        if ($book) {
+            return $this->bookRepository->syncStores($book, $storeIds);
+        }
+        return null;
     }
 }

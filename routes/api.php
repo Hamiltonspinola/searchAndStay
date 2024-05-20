@@ -1,5 +1,6 @@
 <?php
 
+use App\Interfaces\Http\Controllers\AuthController;
 use App\Interfaces\Http\Controllers\BookController;
 use App\Interfaces\Http\Controllers\StoreController;
 use Illuminate\Http\Request;
@@ -16,10 +17,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::apiResource('books', BookController::class);
-Route::post('/books/store', [BookController::class, 'store'])->name('book.store');
-// Route::apiResource('stores', StoreController::class);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::prefix('books')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/', [BookController::class, 'index'])->name('book.index');
+        Route::get('/{id}', [BookController::class, 'show'])->name('book.show');
+        Route::post('/store', [BookController::class, 'store'])->name('book.store');
+        Route::put('/{id}', [BookController::class, 'update'])->name('book.update');
+        Route::delete('/{id}', [BookController::class, 'destroy'])->name('book.delete');
+        Route::post('/{id}/attach-stores', [BookController::class, 'book.attachStores']);
+        Route::post('/{id}/detach-stores', [BookController::class, 'book.detachStores']);
+        Route::post('/{id}/sync-stores', [BookController::class, 'book.syncStores']);
+    });
+});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('stores')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/', [StoreController::class, 'index'])->name('store.index');
+        Route::get('/{id}', [StoreController::class, 'show'])->name('store.show');
+        Route::post('/store', [StoreController::class, 'store'])->name('store.store');
+        Route::put('/{id}', [StoreController::class, 'update'])->name('store.update');
+        Route::delete('/{id}', [StoreController::class, 'destroy'])->name('store.delete');
+    });
 });

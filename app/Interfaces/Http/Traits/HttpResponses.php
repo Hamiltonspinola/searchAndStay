@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Traits;
+namespace App\Interfaces\Http\Traits;
 
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Database\Eloquent\Model;

@@ -22,12 +22,14 @@ class EloquentStoreRepository implements StoreRepository
         return null;
     }
 
-    public function save(Store $store): void
+    public function save(Store $store): ?EloquentStore
     {
-        EloquentStore::updateOrCreate(
+        $eloquentStore = EloquentStore::updateOrCreate(
             ['id' => $store->getId()],
             ['name' => $store->getName(), 'address' => $store->getAddress(), 'active' => $store->getActive()]
         );
+        return $eloquentStore;
+        
     }
 
     public function delete($id): void

@@ -11,4 +11,9 @@ class EloquentBook extends Model
 
     protected $table    = 'books';
     protected $fillable = ['name', 'isbn', 'value'];
+
+    public function stores()
+    {
+        return $this->belongsToMany(EloquentStore::class, 'book_store', 'book_id', 'store_id');
+    }
 }

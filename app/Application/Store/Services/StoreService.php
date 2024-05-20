@@ -23,11 +23,10 @@ class StoreService
         return $this->storeRepository->findById($id);
     }
 
-    public function createStore($name, $address, $active): Store
+    public function createStore($name, $address, $active)
     {
         $store = new Store(null, $name, $address, $active);
-        $this->storeRepository->save($store);
-        return $store;
+        return $this->storeRepository->save($store);
     }
 
     public function updateStore($id, $name, $address, $active): ?Store

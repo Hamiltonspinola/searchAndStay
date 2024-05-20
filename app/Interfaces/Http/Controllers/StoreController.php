@@ -2,7 +2,6 @@
 namespace App\Interfaces\Http\Controllers;
 
 use App\Application\Store\Services\StoreService;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -33,7 +32,10 @@ class StoreController extends Controller
         ]);
 
         $store = $this->storeService->createStore($validated['name'], $validated['address'], $validated['active']);
-        return response()->json($store, 201);
+        return response()->json([
+            'data' => $store,
+            'message' => 'Store created!'
+        ], 201);
     }
 
     public function update(Request $request, $id)

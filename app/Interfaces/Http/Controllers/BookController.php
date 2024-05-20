@@ -3,7 +3,6 @@
 namespace App\Interfaces\Http\Controllers;
 
 use App\Application\Book\Services\BookService;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -56,5 +55,34 @@ class BookController extends Controller
     {
         $this->bookService->deleteBook($id);
         return response()->json(null, 204);
+    }
+
+    public function attachStores(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'store_ids' => 'required|array',
+            'store_ids.*' => 'exists:stores,id',
+        ]);
+
+        $this->bookService->attachStores($id, $validated['store_ids']);
+        return response()->json(['message' => 'Stores attached successfully'], 200);
+    }
+
+    public function detachStores(Request $request, $id)
+    {
+        $storeIds = $request->input('store_ids');
+        try {
+            $book = $this->bookService->detachStores($id, $storeIds);
+            return response()->json(['message' => 'Stores detached successfully', 'book' => $book], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function syncStores(Request $request, $id)
+    {
+        $storeIds = $request->input('store_ids');
+        $book = $this->bookService->syncStores($id, $storeIds);
+        return response()->json($book, 200);
     }
 }

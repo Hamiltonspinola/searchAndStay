@@ -9,7 +9,7 @@ class Book
     private $isbn;
     private $value;
 
-    public function __construct($id, $name, $isbn, $value)
+    public function __construct($id = null, $name, $isbn, $value)
     {
         $this->id = $id;
         $this->name = $name;
