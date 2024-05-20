@@ -33,49 +33,43 @@ The project consists of a Laravel application that provides RESTful APIs for man
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository:<a href='https://github.com/Hamiltonspinola/searchAndStay.git'>repository</a>
 
- <p><a href='https://github.com/Hamiltonspinola/searchAndStay.git'>repository</a></p>
-
-2. Install or update dependencies:
-
- <p>Composer update</p>
+2. Install or update dependencies: `Composer update`
 
 3. Copy the `.env.example` file to `.env`:
 
 4. Configure the `.env` file with your database credentials.
 
-5. Generate the application key:
- <p>php artisan key:generate</p>
+5. Generate the application key: php artisan key:generate
 
-6. Run the database migrations:
- <p>php artisan migrate</p>
+6. Run the database migrations: `php artisan migrate`
 
 ## Running the Development Server
 
-To start the development server, run the following command:
+To start the development server, run the following command: `php artisan migrate`
 
- <p>php artisan migrate</p>
+# Using the REST API
+### Authentication credentials
+<p>POST /api/login</p>
 
-## Using the REST API
-# Authentication credentials#
-POST /api/login
-header{
+<p>header{
     Content-Type: "application/json"
     Accept: "application/json"
-}
-
+}</p>
+<p>
 body{
     "email": "searchandstay@email.com",
     "password": "password"
 }
+</p>
 <p>Copy the token obtained from the 'token' index of the data object</p>
 
 --------------------------------------------------------------
 header{
     Content-Type: "application/json"
     Accept: "application/json"
-    Authorization: "Bearer"
+    Authorization: "Bearer token"
 }
 
 
@@ -121,7 +115,9 @@ POST /api/books/{id}/detach-stores
 "store_ids": [1, 2]
 }
 
-## ------------------------------------------------------- ##
+
+
+
 ### Create a new store
 
 POST /api/stores
